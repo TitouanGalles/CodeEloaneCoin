@@ -3,6 +3,8 @@ import openai
 import tweepy
 import random
 import time
+from threading import Thread
+from flask import Flask
 
 # === API KEYS (via variables d'environnement) ===
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -94,3 +96,19 @@ def run_bot():
             print("❌ Error replying to mentions:", e)
 
         time.sleep(3600)  # 1 hour delay
+
+# === Flask app to bind port ===
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Crypto Guru Bot is running."
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    
+    # Run bot in a separate thread so Flask can run simultaneously
+    bot_thread = Thread(target=run_bot, daemon=True)
+    bot_thread.start()
+
+    app.run(host="0.0.0.0", port=port)

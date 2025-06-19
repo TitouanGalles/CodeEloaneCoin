@@ -95,7 +95,7 @@ def run_bot():
         except Exception as e:
             print("❌ Error replying to mentions:", e)
 
-        time.sleep(3600)  # 1 hour delay
+        time.sleep(3)  # 1 hour delay
 
 # === Flask app to bind port ===
 app = Flask(__name__)
